@@ -13,6 +13,10 @@ extern "C" {
 #include <wiiu/dynlib/gx2.h>
 #include <wiiu/dynlib/h264.h>
 #include <wiiu/dynlib/mic.h>
+#include <wiiu/dynlib/nio_prof.h>
+#include <wiiu/dynlib/nsyshid.h>
+#include <wiiu/dynlib/padscore.h>
+#include <wiiu/dynlib/proc_ui.h>
 #include <wiiu/dynlib/sndcore2.h>
 #include <wiiu/dynlib/sysapp.h>
 #include <wiiu/dynlib/vpad.h>

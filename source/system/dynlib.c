@@ -1204,6 +1204,12 @@ EXPORT_FUNC_C(MICError, MICSetState, MICHandle mic, MICState state, u32 value);
 EXPORT_FUNC_C(MICError, MICGetState, MICHandle mic, MICState state, u32* value);
 EXPORT_FUNC_C(MICError, MICClose, MICHandle mic);
 
+EXPORT_FUNC_C(IOProfilerError, IO_ProfilerLibInit, void);
+EXPORT_FUNC_C(IOProfilerError, IO_ProfilerLibFinish, void);
+EXPORT_FUNC_C(IOProfilerError, IO_ProfilerStartCheckpoint, IOProfilerFlag flags);
+EXPORT_FUNC_C(IOProfilerError, IO_ProfilerGetStatsAndEndCheckpoint, IOProfilerFlag flags, u32* duration, IOProfilerStat* stats, int* numStats);
+EXPORT_FUNC_C(IOProfilerError, IO_ProfilerGetStatsAndRestartCheckpoint, IOProfilerFlag flags, u32* duration, IOProfilerStat* stats, int* numStats);
+
 EXPORT_FUNC_C(CURLFORMcode, curl_formadd, struct curl_httppost **httppost, struct curl_httppost **last_post, ...);
 EXPORT_FUNC_C(void, curl_formfree, struct curl_httppost *form);
 EXPORT_FUNC_C(char*, curl_getenv, const char *variable);
@@ -1263,6 +1269,23 @@ EXPORT_FUNC_C(CURLMcode, curl_multi_timeout, CURLM *multi_handle, long *millisec
 EXPORT_FUNC_C(CURLMcode, curl_multi_setopt, CURLM *multi_handle, CURLMoption option, ...);
 EXPORT_FUNC_C(CURLMcode, curl_multi_assign, CURLM *multi_handle, curl_socket_t sockfd, void *sockp);
 
+EXPORT_FUNC_C(HIDError, HIDSetup, void);
+EXPORT_FUNC_C(HIDError, HIDTeardown, void);
+EXPORT_FUNC_C(HIDError, HIDAddClient, HIDClient* client, HIDAttachCallback attachCallback);
+EXPORT_FUNC_C(HIDError, HIDDelClient, HIDClient* client);
+EXPORT_FUNC_C(HIDError, HIDGetDescriptor, HIDDeviceHandle handle, u8 descriptorType, u8 descriptorIndex, u16 languageId, u8* buffer, u32 bufferLength, HIDCallback asyncCallback, void* userData);
+EXPORT_FUNC_C(HIDError, HIDSetDescriptor, HIDDeviceHandle handle, u8 descriptorType, u8 descriptorIndex, u16 languageId, u8* buffer, u32 bufferLength, HIDCallback asyncCallback, void* userData);
+EXPORT_FUNC_C(HIDError, HIDGetReport, HIDDeviceHandle handle, u8 reportType, u8 reportId, u8* buffer, u32 bufferLength, HIDCallback asyncCallback, void* userData);
+EXPORT_FUNC_C(HIDError, HIDSetReport, HIDDeviceHandle handle, u8 reportType, u8 reportId, u8* buffer, u32 bufferLength, HIDCallback asyncCallback, void* userData);
+EXPORT_FUNC_C(HIDError, HIDGetProtocol, HIDDeviceHandle handle, u8 interfaceIndex, u8* protocol, HIDCallback asyncCallback, void* userData);
+EXPORT_FUNC_C(HIDError, HIDSetProtocol, HIDDeviceHandle handle, u8 interfaceIndex, u8 protocol, HIDCallback asyncCallback, void* userData);
+EXPORT_FUNC_C(HIDError, HIDGetIdle, HIDDeviceHandle handle, u8 interfaceIndex, u8 reportId, u8* idle, HIDCallback asyncCallback, void* userData);
+EXPORT_FUNC_C(HIDError, HIDSetIdle, HIDDeviceHandle handle, u8 interfaceIndex, u8 reportId, u8 duration, HIDCallback asyncCallback, void* userData);
+EXPORT_FUNC_C(HIDError, HIDRead, HIDDeviceHandle handle, u8* buffer, u32 bufferLength, HIDCallback asyncCallback, void* userData);
+EXPORT_FUNC_C(HIDError, HIDWrite, HIDDeviceHandle handle, u8* buffer, u32 bufferLength, HIDCallback asyncCallback, void* userData);
+EXPORT_FUNC_C(HIDError, HIDResetDevice, HIDDeviceHandle handle, HIDCallback asyncCallback, void* userData);
+EXPORT_FUNC_C(void, HIDDecodeError, HIDError error, u32* category, s32* code);
+
 EXPORT_FUNC_C(uint32_t, ntohl, uint32_t val);
 EXPORT_FUNC_C(uint32_t, htonl, uint32_t val);
 EXPORT_FUNC_C(uint16_t, ntohs, uint16_t val);
@@ -1315,6 +1338,238 @@ EXPORT_FUNC_C(void, freeaddrinfo, struct addrinfo* res);
 EXPORT_FUNC_C(const char*, gai_strerror, int errcode);
 
 EXPORT_FUNC_C(int, getaddrinfo_rs, const char* node, const char* service, const struct addrinfo* hints, struct addrinfo** res);
+
+EXPORT_FUNC_C(bool, WBCSetupCalibration, void);
+EXPORT_FUNC_C(bool, WBCGetCalibrationStatus, void);
+EXPORT_FUNC_C(s32, WBCRead, WPADBLStatus* status, double* weight, u32 size);
+EXPORT_FUNC_C(s32, WBCGetBatteryLevel, u8 battery);
+EXPORT_FUNC_C(s32, WBCSetZEROPoint, double* pressAvg, u32 size);
+EXPORT_FUNC_C(s32, WBCGetTGCWeight, double totalWeightAvg, double *tgcWeight, WPADBLStatus* status);
+
+EXPORT_FUNC_C(void, WPADInit, void);
+EXPORT_FUNC_C(void, WPADShutdown, void);
+EXPORT_FUNC_C(void, WPADRegisterAllocator, WPADAlloc alloc, WPADFree free);
+EXPORT_FUNC_C(u32, WPADGetWorkMemorySize, void);
+
+EXPORT_FUNC_C(WPADError, WPADProbe, WPADChannel chan, WPADDevice* type);
+EXPORT_FUNC_C(WPADState, WPADGetStatus, void);
+EXPORT_FUNC_C(WPADFormat, WPADGetDataFormat, WPADChannel chan);
+EXPORT_FUNC_C(WPADError, WPADSetDataFormat, WPADChannel chan, WPADFormat fmt);
+EXPORT_FUNC_C(void, WPADRead, WPADChannel chan, void* status);
+
+EXPORT_FUNC_C(void, WPADSetAutoSamplingBuf, WPADChannel chan, void* buf, u32 length);
+EXPORT_FUNC_C(u32, WPADGetLatestIndexInBuf, WPADChannel chan);
+
+EXPORT_FUNC_C(void, WPADGetAccGravityUnit, WPADChannel chan, u32 type, WPADAcc* acc);
+EXPORT_FUNC_C(void, WPADGetCLTriggerThreshold, WPADChannel chan, u8* left, u8* right);
+EXPORT_FUNC_C(void, WPADClampStick, WPADChannel chan, void* status, WPADStickClamp type);
+EXPORT_FUNC_C(void, WPADClampTrigger, WPADChannel chan, void* status, WPADTriggerClamp type);
+EXPORT_FUNC_C(void, WPADClampAcc, WPADChannel chan, void* status, WPADAccClamp type);
+
+EXPORT_FUNC_C(bool, WPADIsDpdEnabled, WPADChannel chan);
+EXPORT_FUNC_C(WPADDpdCommand, WPADGetDpdFormat, WPADChannel chan);
+EXPORT_FUNC_C(WPADError, WPADControlDpd, WPADChannel chan, WPADDpdCommand command, WPADCallback callback);
+EXPORT_FUNC_C(u8, WPADGetDpdSensitivity, void);
+EXPORT_FUNC_C(WPADError, WPADControlExtGimmick, WPADChannel chan, WPADExtGimmickCommand command, WPADCallback callback);
+
+EXPORT_FUNC_C(void, WPADDisconnect, WPADChannel chan);
+EXPORT_FUNC_C(WPADError, WPADGetInfo, WPADChannel chan, WPADInfo* info);
+EXPORT_FUNC_C(WPADError, WPADGetInfoAsync, WPADChannel chan, WPADInfo* info, WPADCallback callback);
+EXPORT_FUNC_C(void, WPADGetAddress, WPADChannel chan, u8* addr);
+EXPORT_FUNC_C(u8, WPADGetRegisteredDevNum, void);
+EXPORT_FUNC_C(u8, WPADGetRadioSensitivity, WPADChannel chan);
+EXPORT_FUNC_C(WPADBatteryLevel, WPADGetBatteryLevel, WPADChannel chan);
+
+EXPORT_FUNC_C(bool, WPADIsSpeakerEnabled, WPADChannel chan);
+EXPORT_FUNC_C(WPADError, WPADControlSpeaker, WPADChannel chan, WPADSpeakerCommand command, WPADCallback callback);
+EXPORT_FUNC_C(u8, WPADGetSpeakerVolume, void);
+
+EXPORT_FUNC_C(WPADError, WPADSendStreamData, WPADChannel chan, void* buf, u16 len);
+EXPORT_FUNC_C(bool, WPADCanSendStreamData, WPADChannel chan);
+
+EXPORT_FUNC_C(void, WPADControlMotor, WPADChannel chan, WPADMotorCommand command);
+EXPORT_FUNC_C(bool, WPADIsMotorEnabled, void);
+
+EXPORT_FUNC_C(void, WPADSetAutoSleepTime, u8 minutes);
+EXPORT_FUNC_C(u32, WPADGetAutoSleepTimeCount, WPADChannel chan);
+EXPORT_FUNC_C(void, WPADResetAutoSleepTimeCount, WPADChannel chan);
+
+EXPORT_FUNC_C(WPADSensorBarPosition, WPADGetSensorBarPosition, void);
+EXPORT_FUNC_C(void, WPADEnableSensorBar, WPADSensorBarPosition sensorBar);
+EXPORT_FUNC_C(void, WPADSetSensorBar, bool on);
+
+EXPORT_FUNC_C(void, WPADSetGameTitleUtf16, const u16* title);
+EXPORT_FUNC_C(WPADError, WPADGetGameTitleUtf16, WPADChannel chan, const u16** title);
+EXPORT_FUNC_C(WPADError, WPADGetGameDataTimeStamp, WPADChannel chan, OSTime* time);
+
+EXPORT_FUNC_C(bool, WPADSetAcceptConnection, bool accept);
+EXPORT_FUNC_C(bool, WPADGetAcceptConnection, void);
+
+EXPORT_FUNC_C(bool, WPADStartSyncDevice, void);
+EXPORT_FUNC_C(bool, WPADPurgeBtDb, void);
+EXPORT_FUNC_C(bool, WPADCancelSyncDevice, void);
+EXPORT_FUNC_C(bool, WPADIsBusyForSync, void);
+EXPORT_FUNC_C(WPADError, WPADGetSyncType, WPADChannel chan, WPADSyncType* type);
+
+EXPORT_FUNC_C(WPADSamplingCallback, WPADSetSamplingCallback, WPADChannel chan, WPADSamplingCallback callback);
+EXPORT_FUNC_C(WPADExtensionCallback, WPADSetExtensionCallback, WPADChannel chan, WPADExtensionCallback callback);
+EXPORT_FUNC_C(WPADConnectCallback, WPADSetConnectCallback, WPADChannel chan, WPADConnectCallback callback);
+EXPORT_FUNC_C(WPADSyncDeviceCallback, WPADSetSyncDeviceCallback, WPADSyncDeviceCallback callback);
+EXPORT_FUNC_C(WPADClearDeviceCallback, WPADSetClearDeviceCallback, WPADClearDeviceCallback callback);
+
+EXPORT_FUNC_C(bool, WPADAttachDummyExtension, WPADChannel chan, WPADDevice type);
+EXPORT_FUNC_C(bool, WPADDetachDummyExtension, WPADChannel chan);
+
+EXPORT_FUNC_C(WPADError, WPADIsMplsAttached, WPADChannel chan, bool* attached, WPADCallback callback);
+EXPORT_FUNC_C(WPADError, WPADIsMplsIntegrated, WPADChannel chan);
+EXPORT_FUNC_C(bool, WPADGetCalibrationStatus, WPADChannel chan);
+
+EXPORT_FUNC_C(void, WPADEnableURCC, bool enable);
+EXPORT_FUNC_C(void, WPADEnableWiiRemote, bool enable);
+EXPORT_FUNC_C(void, WPADDisableBluetooth, void);
+
+EXPORT_FUNC_C(s32, WPADControlBLC, WPADChannel chan, WPADBLCommand command, WPADCallback callback);
+EXPORT_FUNC_C(s32, WPADGetBLCalibration, WPADChannel chan, u8* data, u16 addr, u16 len, WPADCallback callback);
+EXPORT_FUNC_C(bool, WPADIsRegisteredBLC, void);
+EXPORT_FUNC_C(void, WPADRegisterBLCWorkarea, void* workArea);
+EXPORT_FUNC_C(bool, WPADIsEnabledWBC, void);
+EXPORT_FUNC_C(void, WPADEnableWBC, void);
+
+EXPORT_FUNC_C(s32, WENCGetEncodeData, WENCInfo* info, WENCFlag flag, const s16* pcmData, s32 sampleNum, u8* pbyEncData);
+
+EXPORT_FUNC_C(void, KPADInit, void);
+EXPORT_FUNC_C(void, KPADInitEx, KPADUnifiedWpadStatus* uniRingBufs, u32 length);
+EXPORT_FUNC_C(void, KPADShutdown, void);
+EXPORT_FUNC_C(void, KPADReset, void);
+
+EXPORT_FUNC_C(s32, KPADRead, WPADChannel chan, KPADStatus* samplingBufs, u32 count);
+EXPORT_FUNC_C(s32, KPADReadEx, WPADChannel chan, KPADStatus* samplingBufs, u32 count, KPADReadError* err);
+EXPORT_FUNC_C(void, KPADGetUnifiedWpadStatus, WPADChannel chan, KPADUnifiedWpadStatus* dst, u32 count);
+EXPORT_FUNC_C(void, KPADGetProjectionPos, KPADVec2* dst, const KPADVec2* src, const KPADRect* projRect, f32 viRatio);
+
+EXPORT_FUNC_C(void, KPADSetPosParam, WPADChannel chan, f32 playRadius, f32 sensitivity);
+EXPORT_FUNC_C(void, KPADSetHoriParam, WPADChannel chan, f32 playRadius, f32 sensitivity);
+EXPORT_FUNC_C(void, KPADSetDistParam, WPADChannel chan, f32 playRadius, f32 sensitivity);
+EXPORT_FUNC_C(void, KPADSetAccParam, WPADChannel chan, f32 playRadius, f32 sensitivity);
+EXPORT_FUNC_C(void, KPADSetCrossStickEmulationParamsL, WPADChannel chan, f32 rotDeg, f32 xyDeg, f32 radius);
+EXPORT_FUNC_C(void, KPADSetCrossStickEmulationParamsR, WPADChannel chan, f32 rotDeg, f32 xyDeg, f32 radius);
+EXPORT_FUNC_C(void, KPADGetPosParam, WPADChannel chan, f32* playRadius, f32* sensitivity);
+EXPORT_FUNC_C(void, KPADGetHoriParam, WPADChannel chan, f32* playRadius, f32* sensitivity);
+EXPORT_FUNC_C(void, KPADGetDistParam, WPADChannel chan, f32* playRadius, f32* sensitivity);
+EXPORT_FUNC_C(void, KPADGetAccParam, WPADChannel chan, f32* playRadius, f32* sensitivity);
+EXPORT_FUNC_C(void, KPADGetCrossStickEmulationParamsL, WPADChannel chan, f32* rotDeg, f32* xyDeg, f32* radius);
+EXPORT_FUNC_C(void, KPADGetCrossStickEmulationParamsR, WPADChannel chan, f32* rotDeg, f32* xyDeg, f32* radius);
+
+EXPORT_FUNC_C(void, KPADSetBtnRepeat, WPADChannel chan, f32 delaySec, f32 pulseSec);
+EXPORT_FUNC_C(void, KPADSetObjInterval, f32 interval);
+
+EXPORT_FUNC_C(void, KPADDisableDPD, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADEnableDPD, WPADChannel chan);
+EXPORT_FUNC_C(s32, KPADCalibrateDPD, WPADChannel chan);
+
+EXPORT_FUNC_C(void, KPADSetSensorHeight, WPADChannel chan, f32 level);
+EXPORT_FUNC_C(f32, KPADGetSensorHeight, WPADChannel chan);
+
+EXPORT_FUNC_C(void, KPADEnableStickCrossClamp, void);
+EXPORT_FUNC_C(void, KPADDisableStickCrossClamp, void);
+EXPORT_FUNC_C(void, KPADSetFSStickClamp, s8 min, s8 max);
+
+EXPORT_FUNC_C(void, KPADEnableAimingMode, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADDisableAimingMode, WPADChannel chan);
+EXPORT_FUNC_C(u8, KPADIsEnableAimingMode, WPADChannel chan);
+
+EXPORT_FUNC_C(void, KPADSetControlDpdCallback, WPADChannel chan, KPADControlDpdCallback callback);
+EXPORT_FUNC_C(WPADSamplingCallback, KPADSetSamplingCallback, WPADChannel chan, WPADSamplingCallback callback);
+EXPORT_FUNC_C(WPADConnectCallback, KPADSetConnectCallback, WPADChannel chan, WPADConnectCallback callback);
+
+EXPORT_FUNC_C(void, KPADSetReviseMode, WPADChannel chan, bool sw);
+EXPORT_FUNC_C(f32, KPADReviseAcc, KPADVec3* acc);
+EXPORT_FUNC_C(f32, KPADGetReviseAngle, void);
+EXPORT_FUNC_C(void, KPADSetPosPlayMode, WPADChannel chan, KPADPlayMode mode);
+EXPORT_FUNC_C(void, KPADSetHoriPlayMode, WPADChannel chan, KPADPlayMode mode);
+EXPORT_FUNC_C(void, KPADSetDistPlayMode, WPADChannel chan, KPADPlayMode mode);
+EXPORT_FUNC_C(void, KPADSetAccPlayMode, WPADChannel chan, KPADPlayMode mode);
+EXPORT_FUNC_C(KPADPlayMode, KPADGetPosPlayMode, WPADChannel chan);
+EXPORT_FUNC_C(KPADPlayMode, KPADGetHoriPlayMode, WPADChannel chan);
+EXPORT_FUNC_C(KPADPlayMode, KPADGetDistPlayMode, WPADChannel chan);
+EXPORT_FUNC_C(KPADPlayMode, KPADGetAccPlayMode, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADSetButtonProcMode, WPADChannel chan, KPADButtonProcMode mode);
+EXPORT_FUNC_C(KPADButtonProcMode, KPADGetButtonProcMode, WPADChannel chan);
+
+EXPORT_FUNC_C(void, KPADResetWbcZeroPoint, void);
+EXPORT_FUNC_C(void, KPADResetWbcTgcWeight, void);
+
+EXPORT_FUNC_C(void, KPADDisableMpls, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADEnableMpls, WPADChannel chan, WPADMplsCommand mode);
+EXPORT_FUNC_C(u8, KPADGetMplsStatus, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADSetControlMplsCallback, WPADChannel chan, KPADControlMplsCallback callback);
+EXPORT_FUNC_C(u32, KPADGetMplsWorkSize, void);
+EXPORT_FUNC_C(void, KPADSetMplsWorkarea, void* ptr);
+EXPORT_FUNC_C(void, KPADResetMpls, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADSetMplsAngle, WPADChannel chan, f32 ax, f32 ay, f32 az);
+EXPORT_FUNC_C(void, KPADSetMplsDirection, WPADChannel chan, KPADMPDir* dir);
+EXPORT_FUNC_C(void, KPADStartMplsCalibration, WPADChannel chan);
+EXPORT_FUNC_C(f32, KPADWorkMplsCalibration, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADStopMplsCalibration, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADSetMplsDirectionMag, WPADChannel chan, f32 mag);
+EXPORT_FUNC_C(void, KPADEnableMplsZeroPlay, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADEnableMplsDirRevise, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADEnableMplsAccRevise, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADEnableMplsDpdRevise, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADDisableMplsZeroPlay, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADDisableMplsDirRevise, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADDisableMplsAccRevise, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADDisableMplsDpdRevise, WPADChannel chan);
+EXPORT_FUNC_C(f32, KPADIsEnableMplsZeroPlay, WPADChannel chan);
+EXPORT_FUNC_C(f32, KPADIsEnableMplsZeroDrift, WPADChannel chan);
+EXPORT_FUNC_C(f32, KPADIsEnableMplsDirRevise, WPADChannel chan);
+EXPORT_FUNC_C(f32, KPADIsEnableMplsAccRevise, WPADChannel chan);
+EXPORT_FUNC_C(f32, KPADIsEnableMplsDpdRevise, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADSetMplsZeroPlayParam, WPADChannel chan, f32 radius);
+EXPORT_FUNC_C(void, KPADSetMplsDirReviseParam, WPADChannel chan, f32 revisePw);
+EXPORT_FUNC_C(void, KPADSetMplsAccReviseParam, WPADChannel chan, f32 revisePw, f32 reviseRange);
+EXPORT_FUNC_C(void, KPADSetMplsDpdReviseParam, WPADChannel chan, f32 revisePw);
+EXPORT_FUNC_C(void, KPADSetMplsDirReviseBase, WPADChannel chan, KPADMPDir* base);
+EXPORT_FUNC_C(void, KPADGetMplsZeroPlayParam, WPADChannel chan, f32* radius);
+EXPORT_FUNC_C(void, KPADGetMplsDirReviseParam, WPADChannel chan, f32* revisePw);
+EXPORT_FUNC_C(void, KPADGetMplsAccReviseParam, WPADChannel chan, f32* revisePw, f32* reviseRange);
+EXPORT_FUNC_C(void, KPADGetMplsDpdReviseParam, WPADChannel chan, f32* revisePw);
+EXPORT_FUNC_C(void, KPADInitMplsZeroPlayParam, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADInitMplsDirReviseParam, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADInitMplsAccReviseParam, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADInitMplsDpdReviseParam, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADInitMplsZeroDriftMode, WPADChannel chan);
+EXPORT_FUNC_C(void, KPADSetMplsZeroDriftMode, WPADChannel chan, KPADMplsZeroDriftMode mode);
+EXPORT_FUNC_C(void, KPADGetMplsZeroDriftMode, WPADChannel chan, KPADMplsZeroDriftMode* mode);
+EXPORT_FUNC_C(void, KPADSetMplsMagnification, WPADChannel chan, f32 pitch, f32 yaw, f32 roll);
+
+EXPORT_FUNC_C(void, KPADSetDpdDetection, KPADDPDDetectionMode mode);
+EXPORT_FUNC_C(KPADDPDDetectionMode, KPADGetDpdDetection, void);
+
+EXPORT_FUNC_C(void, ProcUIInit, ProcUISaveCallbackFunction func);
+EXPORT_FUNC_C(void, ProcUIInitEx, ProcUISaveCallbackFunctionEx func, void* data);
+EXPORT_FUNC_C(void, ProcUIShutdown, void);
+
+EXPORT_FUNC_C(bool, ProcUIIsRunning, void);
+EXPORT_FUNC_C(bool, ProcUIInForeground, void);
+EXPORT_FUNC_C(bool, ProcUIInShutdown, void);
+
+EXPORT_FUNC_C(ProcUIStatus, ProcUISubProcessMessages, bool block);
+EXPORT_FUNC_C(ProcUIStatus, ProcUIProcessMessages, bool block);
+
+EXPORT_FUNC_C(void, ProcUIDrawDoneRelease, void);
+
+EXPORT_FUNC_C(u32, ProcUICalcMemorySize, u32 numCallbacks);
+EXPORT_FUNC_C(ProcUIError, ProcUISetMemoryPool, void* memory, u32 sizeInBytes);
+EXPORT_FUNC_C(void, ProcUISetMEM1Storage, void* data, u32 size);
+EXPORT_FUNC_C(void, ProcUISetBucketStorage, void* data, u32 size);
+
+EXPORT_FUNC_C(void, ProcUIClearCallbacks, void);
+EXPORT_FUNC_C(void, ProcUISetCallbackStackSize, u32 size);
+EXPORT_FUNC_C(void, ProcUIRegisterBackgroundCallback, ProcUICallbackFunction func, void* data, OSTime ticksToDelay);
+EXPORT_FUNC_C(void, ProcUIRegisterCallback, ProcUIMessage message, ProcUICallbackFunction func, void* data, s32 priority);
+EXPORT_FUNC_C(void, ProcUIRegisterCallbackCore, ProcUIMessage message, ProcUICallbackFunction func, void* data, s32 priority, OSCoreId core);
+EXPORT_FUNC_C(void, ProcUISetSaveCallback, ProcUISaveCallbackFunctionEx func, void* data);
 
 EXPORT_FUNC_C(void, AIInit, u8* stack);
 EXPORT_FUNC_C(void, AIReset, void);
@@ -1695,8 +1950,12 @@ static OSModuleHandle dmaeHandle = NULL;
 static OSModuleHandle gx2Handle = NULL;
 static OSModuleHandle h264Handle = NULL;
 static OSModuleHandle micHandle = NULL;
+static OSModuleHandle nio_profHandle = NULL;
 static OSModuleHandle nlibcurlHandle = NULL;
+static OSModuleHandle nsyshidHandle = NULL;
 static OSModuleHandle nsysnetHandle = NULL;
+static OSModuleHandle padscoreHandle = NULL;
+static OSModuleHandle proc_uiHandle = NULL;
 static OSModuleHandle sndcore2Handle = NULL;
 static OSModuleHandle sysappHandle = NULL;
 static OSModuleHandle vpadHandle = NULL;
@@ -2914,6 +3173,14 @@ void __wiiu_dynlib_install() {
         EXPORT_FIND_FUNC(micHandle, MICClose);
     }
 
+    if(OSDynLoad_Acquire("nio_prof.rpl", &nio_profHandle) == OS_DYNLOAD_ERROR_NONE) {
+        EXPORT_FIND_FUNC(nio_profHandle, IO_ProfilerLibInit);
+        EXPORT_FIND_FUNC(nio_profHandle, IO_ProfilerLibFinish);
+        EXPORT_FIND_FUNC(nio_profHandle, IO_ProfilerStartCheckpoint);
+        EXPORT_FIND_FUNC(nio_profHandle, IO_ProfilerGetStatsAndEndCheckpoint);
+        EXPORT_FIND_FUNC(nio_profHandle, IO_ProfilerGetStatsAndRestartCheckpoint);
+    }
+
     if(OSDynLoad_Acquire("nlibcurl.rpl", &nlibcurlHandle) == OS_DYNLOAD_ERROR_NONE) {
         EXPORT_FIND_FUNC(nlibcurlHandle, curl_formadd);
         EXPORT_FIND_FUNC(nlibcurlHandle, curl_formfree);
@@ -2975,6 +3242,25 @@ void __wiiu_dynlib_install() {
         EXPORT_FIND_FUNC(nlibcurlHandle, curl_multi_assign);
     }
 
+    if(OSDynLoad_Acquire("nsyshid.rpl", &nsyshidHandle) == OS_DYNLOAD_ERROR_NONE) {
+        EXPORT_FIND_FUNC(nsyshidHandle, HIDSetup);
+        EXPORT_FIND_FUNC(nsyshidHandle, HIDTeardown);
+        EXPORT_FIND_FUNC(nsyshidHandle, HIDAddClient);
+        EXPORT_FIND_FUNC(nsyshidHandle, HIDDelClient);
+        EXPORT_FIND_FUNC(nsyshidHandle, HIDGetDescriptor);
+        EXPORT_FIND_FUNC(nsyshidHandle, HIDSetDescriptor);
+        EXPORT_FIND_FUNC(nsyshidHandle, HIDGetReport);
+        EXPORT_FIND_FUNC(nsyshidHandle, HIDSetReport);
+        EXPORT_FIND_FUNC(nsyshidHandle, HIDGetProtocol);
+        EXPORT_FIND_FUNC(nsyshidHandle, HIDSetProtocol);
+        EXPORT_FIND_FUNC(nsyshidHandle, HIDGetIdle);
+        EXPORT_FIND_FUNC(nsyshidHandle, HIDSetIdle);
+        EXPORT_FIND_FUNC(nsyshidHandle, HIDRead);
+        EXPORT_FIND_FUNC(nsyshidHandle, HIDWrite);
+        EXPORT_FIND_FUNC(nsyshidHandle, HIDResetDevice);
+        EXPORT_FIND_FUNC(nsyshidHandle, HIDDecodeError);
+    }
+
     if(OSDynLoad_Acquire("nsysnet.rpl", &nsysnetHandle) == OS_DYNLOAD_ERROR_NONE) {
         EXPORT_FIND_FUNC(nsysnetHandle, ntohl);
         EXPORT_FIND_FUNC(nsysnetHandle, htonl);
@@ -3030,6 +3316,242 @@ void __wiiu_dynlib_install() {
         EXPORT_FIND_FUNC(nsysnetHandle, getaddrinfo_rs);
     }
 
+    if(OSDynLoad_Acquire("padscore.rpl", &padscoreHandle) == OS_DYNLOAD_ERROR_NONE) {
+        EXPORT_FIND_FUNC(padscoreHandle, WBCSetupCalibration);
+        EXPORT_FIND_FUNC(padscoreHandle, WBCGetCalibrationStatus);
+        EXPORT_FIND_FUNC(padscoreHandle, WBCRead);
+        EXPORT_FIND_FUNC(padscoreHandle, WBCGetBatteryLevel);
+        EXPORT_FIND_FUNC(padscoreHandle, WBCSetZEROPoint);
+        EXPORT_FIND_FUNC(padscoreHandle, WBCGetTGCWeight);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WPADInit);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADShutdown);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADRegisterAllocator);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetWorkMemorySize);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WPADProbe);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetStatus);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetDataFormat);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADSetDataFormat);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADRead);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WPADSetAutoSamplingBuf);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetLatestIndexInBuf);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetAccGravityUnit);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetCLTriggerThreshold);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADClampStick);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADClampTrigger);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADClampAcc);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WPADIsDpdEnabled);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetDpdFormat);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADControlDpd);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetDpdSensitivity);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADControlExtGimmick);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WPADDisconnect);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetInfo);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetInfoAsync);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetAddress);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetRegisteredDevNum);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetRadioSensitivity);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetBatteryLevel);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WPADIsSpeakerEnabled);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADControlSpeaker);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetSpeakerVolume);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WPADSendStreamData);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADCanSendStreamData);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WPADControlMotor);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADIsMotorEnabled);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WPADSetAutoSleepTime);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetAutoSleepTimeCount);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADResetAutoSleepTimeCount);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetSensorBarPosition);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADEnableSensorBar);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADSetSensorBar);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WPADSetGameTitleUtf16);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetGameTitleUtf16);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetGameDataTimeStamp);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WPADSetAcceptConnection);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetAcceptConnection);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WPADStartSyncDevice);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADPurgeBtDb);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADCancelSyncDevice);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADIsBusyForSync);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetSyncType);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WPADSetSamplingCallback);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADSetExtensionCallback);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADSetConnectCallback);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADSetSyncDeviceCallback);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADSetClearDeviceCallback);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WPADAttachDummyExtension);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADDetachDummyExtension);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WPADIsMplsAttached);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADIsMplsIntegrated);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetCalibrationStatus);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WPADEnableURCC);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADEnableWiiRemote);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADDisableBluetooth);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WPADControlBLC);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADGetBLCalibration);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADIsRegisteredBLC);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADRegisterBLCWorkarea);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADIsEnabledWBC);
+        EXPORT_FIND_FUNC(padscoreHandle, WPADEnableWBC);
+
+        EXPORT_FIND_FUNC(padscoreHandle, WENCGetEncodeData);
+
+        EXPORT_FIND_FUNC(padscoreHandle, KPADInit);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADInitEx);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADShutdown);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADReset);
+
+        EXPORT_FIND_FUNC(padscoreHandle, KPADRead);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADReadEx);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetUnifiedWpadStatus);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetProjectionPos);
+
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetPosParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetHoriParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetDistParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetAccParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetCrossStickEmulationParamsL);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetCrossStickEmulationParamsR);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetPosParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetHoriParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetDistParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetAccParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetCrossStickEmulationParamsL);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetCrossStickEmulationParamsR);
+
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetBtnRepeat);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetObjInterval);
+
+        EXPORT_FIND_FUNC(padscoreHandle, KPADDisableDPD);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADEnableDPD);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADCalibrateDPD);
+
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetSensorHeight);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetSensorHeight);
+
+        EXPORT_FIND_FUNC(padscoreHandle, KPADEnableStickCrossClamp);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADDisableStickCrossClamp);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetFSStickClamp);
+
+        EXPORT_FIND_FUNC(padscoreHandle, KPADEnableAimingMode);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADDisableAimingMode);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADIsEnableAimingMode);
+
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetControlDpdCallback);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetSamplingCallback);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetConnectCallback);
+
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetReviseMode);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADReviseAcc);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetReviseAngle);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetPosPlayMode);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetHoriPlayMode);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetDistPlayMode);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetAccPlayMode);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetPosPlayMode);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetHoriPlayMode);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetDistPlayMode);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetAccPlayMode);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetButtonProcMode);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetButtonProcMode);
+
+        EXPORT_FIND_FUNC(padscoreHandle, KPADResetWbcZeroPoint);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADResetWbcTgcWeight);
+
+        EXPORT_FIND_FUNC(padscoreHandle, KPADDisableMpls);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADEnableMpls);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetMplsStatus);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetControlMplsCallback);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetMplsWorkSize);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetMplsWorkarea);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADResetMpls);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetMplsAngle);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetMplsDirection);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADStartMplsCalibration);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADWorkMplsCalibration);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADStopMplsCalibration);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetMplsDirectionMag);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADEnableMplsZeroPlay);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADEnableMplsDirRevise);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADEnableMplsAccRevise);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADEnableMplsDpdRevise);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADDisableMplsZeroPlay);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADDisableMplsDirRevise);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADDisableMplsAccRevise);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADDisableMplsDpdRevise);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADIsEnableMplsZeroPlay);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADIsEnableMplsZeroDrift);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADIsEnableMplsDirRevise);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADIsEnableMplsAccRevise);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADIsEnableMplsDpdRevise);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetMplsZeroPlayParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetMplsDirReviseParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetMplsAccReviseParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetMplsDpdReviseParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetMplsDirReviseBase);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetMplsZeroPlayParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetMplsDirReviseParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetMplsAccReviseParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetMplsDpdReviseParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADInitMplsZeroPlayParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADInitMplsDirReviseParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADInitMplsAccReviseParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADInitMplsDpdReviseParam);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADInitMplsZeroDriftMode);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetMplsZeroDriftMode);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetMplsZeroDriftMode);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetMplsMagnification);
+
+        EXPORT_FIND_FUNC(padscoreHandle, KPADSetDpdDetection);
+        EXPORT_FIND_FUNC(padscoreHandle, KPADGetDpdDetection);
+    }
+    
+    if(OSDynLoad_Acquire("proc_ui.rpl", &proc_uiHandle) == OS_DYNLOAD_ERROR_NONE) {
+        EXPORT_FIND_FUNC(proc_uiHandle, ProcUIInit);
+        EXPORT_FIND_FUNC(proc_uiHandle, ProcUIInitEx);
+        EXPORT_FIND_FUNC(proc_uiHandle, ProcUIShutdown);
+
+        EXPORT_FIND_FUNC(proc_uiHandle, ProcUIIsRunning);
+        EXPORT_FIND_FUNC(proc_uiHandle, ProcUIInForeground);
+        EXPORT_FIND_FUNC(proc_uiHandle, ProcUIInShutdown);
+
+        EXPORT_FIND_FUNC(proc_uiHandle, ProcUISubProcessMessages);
+        EXPORT_FIND_FUNC(proc_uiHandle, ProcUIProcessMessages);
+
+        EXPORT_FIND_FUNC(proc_uiHandle, ProcUIDrawDoneRelease);
+
+        EXPORT_FIND_FUNC(proc_uiHandle, ProcUICalcMemorySize);
+        EXPORT_FIND_FUNC(proc_uiHandle, ProcUISetMemoryPool);
+        EXPORT_FIND_FUNC(proc_uiHandle, ProcUISetMEM1Storage);
+        EXPORT_FIND_FUNC(proc_uiHandle, ProcUISetBucketStorage);
+
+        EXPORT_FIND_FUNC(proc_uiHandle, ProcUIClearCallbacks);
+        EXPORT_FIND_FUNC(proc_uiHandle, ProcUISetCallbackStackSize);
+        EXPORT_FIND_FUNC(proc_uiHandle, ProcUIRegisterBackgroundCallback);
+        EXPORT_FIND_FUNC(proc_uiHandle, ProcUIRegisterCallback);
+        EXPORT_FIND_FUNC(proc_uiHandle, ProcUIRegisterCallbackCore);
+        EXPORT_FIND_FUNC(proc_uiHandle, ProcUISetSaveCallback);
+    }
+    
     if(OSDynLoad_Acquire("sndcore2.rpl", &sndcore2Handle) == OS_DYNLOAD_ERROR_NONE) {
         EXPORT_FIND_FUNC(sndcore2Handle, AIInit);
         EXPORT_FIND_FUNC(sndcore2Handle, AIReset);
@@ -3433,14 +3955,34 @@ void __wiiu_dynlib_uninstall() {
         sndcore2Handle = NULL;
     }
 
+    if(proc_uiHandle != NULL) {
+        OSDynLoad_Release(proc_uiHandle);
+        proc_uiHandle = NULL;
+    }
+
+    if(padscoreHandle != NULL) {
+        OSDynLoad_Release(padscoreHandle);
+        padscoreHandle = NULL;
+    }
+
     if(nsysnetHandle != NULL) {
         OSDynLoad_Release(nsysnetHandle);
         nsysnetHandle = NULL;
     }
 
+    if(nsyshidHandle != NULL) {
+        OSDynLoad_Release(nsyshidHandle);
+        nsyshidHandle = NULL;
+    }
+
     if(nlibcurlHandle != NULL) {
         OSDynLoad_Release(nlibcurlHandle);
         nlibcurlHandle = NULL;
+    }
+
+    if(nio_profHandle != NULL) {
+        OSDynLoad_Release(nio_profHandle);
+        nio_profHandle = NULL;
     }
 
     if(micHandle != NULL) {
