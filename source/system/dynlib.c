@@ -647,7 +647,6 @@ EXPORT_FUNC_C(void, OSInitRendezvous, OSRendezvous* ren);
 EXPORT_FUNC_C(bool, OSWaitRendezvous, OSRendezvous* ren, u32 mask);
 EXPORT_FUNC_C(bool, OSWaitRendezvousWithTimeout, OSRendezvous* ren, u32 mask, OSTime timeout);
 
-EXPORT_FUNC_C(int, __os_snprintf, char* s, int n, const char * format, ...);
 EXPORT_FUNC_C(void, OSScreenInit, void);
 EXPORT_FUNC_C(void, OSScreenShutdown, void);
 EXPORT_FUNC_C(void, OSScreenEnableEx, int bufferId, bool enable);
@@ -2606,7 +2605,6 @@ void __wiiu_dynlib_install() {
         EXPORT_FIND_FUNC(coreinitHandle, OSWaitRendezvous);
         EXPORT_FIND_FUNC(coreinitHandle, OSWaitRendezvousWithTimeout);
 
-        EXPORT_FIND_FUNC(coreinitHandle, __os_snprintf);
         EXPORT_FIND_FUNC(coreinitHandle, OSScreenInit);
         EXPORT_FIND_FUNC(coreinitHandle, OSScreenShutdown);
         EXPORT_FIND_FUNC(coreinitHandle, OSScreenEnableEx);
