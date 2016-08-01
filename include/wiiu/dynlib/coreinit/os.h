@@ -1307,7 +1307,6 @@ EXPORT_FUNC_H(void, OSInitRendezvous, OSRendezvous* ren);
 EXPORT_FUNC_H(bool, OSWaitRendezvous, OSRendezvous* ren, u32 mask);
 EXPORT_FUNC_H(bool, OSWaitRendezvousWithTimeout, OSRendezvous* ren, u32 mask, OSTime timeout);
 
-EXPORT_FUNC_H(int, __os_snprintf, char* s, int n, const char * format, ...);
 EXPORT_FUNC_H(void, OSScreenInit, void);
 EXPORT_FUNC_H(void, OSScreenShutdown, void);
 EXPORT_FUNC_H(void, OSScreenEnableEx, int bufferId, bool enable);
